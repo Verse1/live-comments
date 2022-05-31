@@ -6,13 +6,15 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   }
 });
 
+const key = '';
+
 chrome.runtime.onMessage.addListener(async function (
   request,
   sender,
   sendResponse
 ) {
   if (request.message == 'GET' && request.id != null) {
-    const url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=50&order=relevance&textFormat=plainText&videoId=${request.id}&key=`;
+    const url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=50&order=relevance&textFormat=plainText&videoId=${request.id}&key=${key}`;
     let comments;
     await $.ajax({
       url: url,
@@ -25,6 +27,8 @@ chrome.runtime.onMessage.addListener(async function (
         console.log(error);
       },
     });
+
+    chrome.tabs.sendMessage(sender.tab.id, { comments });
   }
 });
 
