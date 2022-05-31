@@ -9,5 +9,29 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message == 'GET' && request.id != null) {
     const url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=50&order=relevance&textFormat=plainText&videoId=${request.id}&key=`;
+
+    $.ajax({
+      url: url,
+      type: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        filterComments(data.items);
+      },
+      error: function (xhr, status, error) {
+        console.log(error);
+      },
+    });
   }
 });
+
+const filterComments = (comments) => {
+  console.log(comments);
+  const parsedComments = comments.map((comment) => {
+    let unparsedComment = comment.snippet.topLevelComment.snippet;
+    return {
+      user: unparsedComment.authorDisplayName,
+      text: unparsedComment.textDisplay,
+    };
+  });
+  console.log(parsedComments);
+};
