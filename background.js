@@ -8,7 +8,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message == 'GET' && request.id != null) {
-    const url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=200&order=relevance&textFormat=plainText&videoId=${request.id}&key=`;
+    const url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=50&order=relevance&textFormat=plainText&videoId=${request.id}&key=`;
 
     $.ajax({
       url: url,
@@ -35,9 +35,17 @@ const filterComments = (comments) => {
     };
   });
 
-  const filteredComments = parsedComments.filter((comment) => {
-    return timeStamp.test(comment.text);
-  });
+  const filteredComments = parsedComments
+    .filter((comment) => {
+      return timeStamp.test(comment.text);
+    })
+    .map((comment) => {
+      return {
+        user: comment.user,
+        text: comment.text,
+        timeStamp: comment.text.match(timeStamp)[0],
+      };
+    });
   console.log(parsedComments);
   console.log(filteredComments);
 };
