@@ -40,10 +40,14 @@ const filterComments = (comments) => {
       return timeStamp.test(comment.text);
     })
     .map((comment) => {
+      let time = comment.text.match(timeStamp)[0];
+      time = time.split(':');
+      time = parseInt(time[0]) * 60 + parseInt(time[1]);
+
       return {
         user: comment.user,
         text: comment.text,
-        timeStamp: comment.text.match(timeStamp)[0],
+        timeStamp: time,
       };
     });
   console.log(parsedComments);
