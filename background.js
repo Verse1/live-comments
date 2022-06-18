@@ -2,7 +2,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (
     changeInfo.status == 'complete' &&
     tab.active &&
-    /^https:\/\/www.youtube.com\/watch\*/.test(tab.url)
+    /^https:\/\/www.youtube.com\/watch\?/.test(tab.url)
   ) {
     chrome.tabs.executeScript(tabId, {
       file: 'content.js',
