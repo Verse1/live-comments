@@ -20,21 +20,31 @@ chrome.runtime.onMessage.addListener(async function (
   sender,
   sendResponse
 ) {
+  let comments = [];
+  let page;
+  let nextPage = true;
   if (request.message == 'GET' && request.id != null) {
-    const url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=100&order=relevance&searchTerms=%3A&textFormat=plainText&videoId=${request.id}&key=${key}`;
-    let comments;
-    await $.ajax({
-      url: url,
-      type: 'GET',
-      dataType: 'json',
-      success: function (data) {
-        comments = filterComments(data.items);
-      },
-      error: function (xhr, status, error) {
-        console.log(error);
-      },
-    });
-
+    let url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=100&order=relevance&searchTerms=%3A&textFormat=plainText&videoId=${request.id}&key=${key}`;
+    while (nextPage) {
+      // console.log(comments,"comments");
+      await $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          comments = comments.concat(filterComments(data.items));
+          if (!data.nextPageToken) {
+            nextPage = false;
+          }
+          page = data.nextPageToken;
+        },
+        error: function (xhr, status, error) {
+          console.log(error);
+        },
+      });
+      url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=100&order=relevance&pageToken=${page}&searchTerms=%3A&textFormat=plainText&videoId=${request.id}&key=${key}`;
+    }
+    console.log(comments);
     chrome.tabs.sendMessage(sender.tab.id, { comments });
   }
 });
