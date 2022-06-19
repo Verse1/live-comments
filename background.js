@@ -4,6 +4,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     tab.active &&
     /^https:\/\/www.youtube.com\/watch\?/.test(tab.url)
   ) {
+    chrome.tabs.insertCSS(tabId, {
+      file: 'content.css',
+    });
     chrome.tabs.executeScript(tabId, {
       file: 'content.js',
     });

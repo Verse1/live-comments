@@ -9,11 +9,11 @@ const commentInjector = (commentText) => {
 
   comment.classList.add('comment');
   comment.innerText = commentText;
-  comment.style.position = 'absolute';
-  comment.style.top = `${vid.top}px`;
-  comment.style.left = `${vid.left}px`;
-  comment.style.backgroundColor = 'black';
-  comment.style.color = 'white';
+
+  comment.style.top = `${vid.bottom}px`;
+  comment.style.left = `${vid.right}px`;
+
+;
   document.querySelector('body').append(comment);
 };
 

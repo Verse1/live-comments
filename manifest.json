@@ -10,5 +10,5 @@
     "default_title": "YouTube Live Comments",
     "default_popup": "popup.html"
   },
-  "permissions": ["tabs", "activeTab", "https://www.youtube.com/*"]
+  "permissions": ["tabs", "activeTab", "storage", "https://www.youtube.com/*"]
 }
