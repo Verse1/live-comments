@@ -13,7 +13,6 @@ const commentInjector = (commentText) => {
   comment.style.top = `${vid.bottom}px`;
   comment.style.left = `${vid.right}px`;
 
-;
   document.querySelector('body').append(comment);
 };
 
@@ -31,6 +30,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return b.timeStamp - a.timeStamp;
     });
     console.log(comments);
+
     setInterval(() => {
       comments.forEach((comment) => {
         videoTime = Math.floor(

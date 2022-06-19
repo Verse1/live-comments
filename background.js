@@ -21,7 +21,7 @@ chrome.runtime.onMessage.addListener(async function (
   sendResponse
 ) {
   if (request.message == 'GET' && request.id != null) {
-    const url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=50&order=relevance&textFormat=plainText&videoId=${request.id}&key=${key}`;
+    const url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=100&order=relevance&searchTerms=%3A&textFormat=plainText&videoId=${request.id}&key=${key}`;
     let comments;
     await $.ajax({
       url: url,
