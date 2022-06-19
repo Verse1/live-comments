@@ -29,15 +29,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     let comments = request.comments.sort((a, b) => {
       return b.timeStamp - a.timeStamp;
     });
-    console.log(comments);
-
     setInterval(() => {
       comments.forEach((comment) => {
         videoTime = Math.floor(
           document.querySelector('.video-stream').currentTime
         );
         if (comment.timeStamp == videoTime) {
-          console.log(comment);
           commentRemover();
           commentInjector(comment.text);
           comments.pop();

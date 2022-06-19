@@ -26,7 +26,6 @@ chrome.runtime.onMessage.addListener(async function (
   if (request.message == 'GET' && request.id != null) {
     let url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=100&order=relevance&searchTerms=%3A&textFormat=plainText&videoId=${request.id}&key=${key}`;
     while (nextPage) {
-      // console.log(comments,"comments");
       await $.ajax({
         url: url,
         type: 'GET',
@@ -44,7 +43,6 @@ chrome.runtime.onMessage.addListener(async function (
       });
       url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=100&order=relevance&pageToken=${page}&searchTerms=%3A&textFormat=plainText&videoId=${request.id}&key=${key}`;
     }
-    console.log(comments);
     chrome.tabs.sendMessage(sender.tab.id, { comments });
   }
 });
